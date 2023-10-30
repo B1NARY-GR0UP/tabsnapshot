@@ -23,5 +23,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     } else if (request.action === 'restoreSnapshot') {
         // 在这里实现恢复快照的逻辑
         // request.snapshot 包含了被点击的快照的信息，可以使用其中的tabs数组来打开链接
+        request.snapshot.tabs.forEach(function(tab) {
+            chrome.tabs.create({ url: tab.url });
+        });
     }
 });

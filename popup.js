@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var listItem = document.createElement('li');
                 listItem.textContent = snapshot.time;
                 listItem.addEventListener('click', function() {
+                    // 在这里实现打开快照中所有链接的逻辑
                     chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
                 });
                 snapshotList.appendChild(listItem);
