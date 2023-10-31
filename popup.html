@@ -3,18 +3,26 @@
 <head>
     <title>tabsnapshot</title>
     <script src="popup.js" defer></script>
+    <!-- TODO: extract css to new file -->
     <style>
         body {
             width: 200px;
         }
         .snapshot-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 5px;
+             background-color: #f1f1f1;
+             padding: 10px;
+             border-radius: 5px;
+             transition: background-color 0.3s;
+         }
+        .snapshot-item:hover {
+            background-color: #dcdcdc;
         }
         .delete-button {
-            background-color: #ff5757;
+            background-color: #ff0b0b;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -22,12 +30,24 @@
             cursor: pointer;
         }
         .delete-button:hover {
-            background-color: #ff3c3c;
+            background-color: #bb0000;
+        }
+        .create-button {
+            background-color: #2f77ff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .create-button:hover {
+            background-color: #006bad;
         }
     </style>
 </head>
 <body>
-<button id="createSnapshot">Create Snapshot</button>
+<h1>Tab Snapshot</h1>
+<button id="createSnapshot" class="create-button">Create Snapshot</button><br><br>
 <div id="snapshotList"></div>
 </body>
 </html>
