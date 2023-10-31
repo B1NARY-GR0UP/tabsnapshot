@@ -26,5 +26,22 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         request.snapshot.tabs.forEach(function(tab) {
             chrome.tabs.create({ url: tab.url });
         });
+    } else if (request.action === 'deleteSnapshot') {
+        // 获取当前存储的快照数组
+        chrome.storage.local.get('snapshots', function(result) {
+            var snapshots = result.snapshots || [];
+            // 在快照数组中查找要删除的快照
+            var index = snapshots.findIndex(function(snapshot) {
+                return snapshot.time === request.snapshot.time;
+            });
+            // 如果找到了要删除的快照，从数组中移除它
+            if (index !== -1) {
+                snapshots.splice(index, 1);
+                // 保存更新后的快照数组
+                chrome.storage.local.set({ snapshots: snapshots }, function() {
+                    chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
+                });
+            }
+        });
     }
 });
