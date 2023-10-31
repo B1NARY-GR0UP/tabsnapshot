@@ -12,11 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (request.action === 'updateList') {
             snapshotList.innerHTML = '';
             request.snapshots.forEach(function(snapshot) {
-                var listItem = document.createElement('li');
-                listItem.textContent = snapshot.time;
+                var listItem = document.createElement('div');
+                listItem.className = 'snapshot-item';
 
-                var deleteButton = document.createElement('span');
-                deleteButton.textContent = 'x';
+                var snapshotText = document.createElement('span');
+                snapshotText.textContent = snapshot.time;
+
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
                 deleteButton.className = 'delete-button';
 
                 // 添加删除按钮的点击事件
@@ -26,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     chrome.runtime.sendMessage({ action: 'deleteSnapshot', snapshot: snapshot });
                 });
 
+                listItem.appendChild(snapshotText);
                 listItem.appendChild(deleteButton);
 
                 listItem.addEventListener('click', function() {

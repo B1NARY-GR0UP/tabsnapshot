@@ -7,10 +7,27 @@
         body {
             width: 200px;
         }
+        .snapshot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .delete-button {
+            background-color: #ff5757;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #ff3c3c;
+        }
     </style>
 </head>
 <body>
 <button id="createSnapshot">Create Snapshot</button>
-<ul id="snapshotList"></ul>
+<div id="snapshotList"></div>
 </body>
 </html>
