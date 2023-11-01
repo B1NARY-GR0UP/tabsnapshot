@@ -58,10 +58,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 listItem.appendChild(deleteButton);
 
                 // 添加快照文本的编辑完成事件
-                snapshotText.addEventListener('blur', function() {
-                    snapshotText.contentEditable = false;
-                    // 发送重命名请求到background.js
-                    chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
+                snapshotText.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        snapshotText.contentEditable = false;
+                        // 发送重命名请求到background.js
+                        chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
+                    }
                 });
 
                 snapshotList.appendChild(listItem);
