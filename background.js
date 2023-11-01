@@ -8,8 +8,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         // 获取当前存储的快照数组
         chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
-            snapshots.push(request.snapshot);
-            // 保存更新后的快照数组
+            var currentTime = new Date();
+            var formattedTime = currentTime.getMonth() + 1 + '/' + currentTime.getDate() + ' ' +
+                currentTime.getHours() + ':' + currentTime.getMinutes();
+            var snapshotName = formattedTime;
+
+            var sameMinuteSnapshots = snapshots.filter(function(existingSnapshot) {
+                return existingSnapshot.time.startsWith(formattedTime);
+            });
+
+            if (sameMinuteSnapshots.length > 0) {
+                snapshotName = formattedTime + ' (' + (sameMinuteSnapshots.length + 1) + ')';
+            }
+
+            var newSnapshot = { time: snapshotName, tabs: request.snapshot.tabs };
+            snapshots.push(newSnapshot);
             chrome.storage.local.set({ snapshots: snapshots }, function() {
                 chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
             });

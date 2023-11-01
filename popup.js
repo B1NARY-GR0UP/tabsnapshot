@@ -7,10 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     createSnapshotButton.addEventListener('click', function() {
         chrome.tabs.query({}, function(tabs) {
-            var currentTime = new Date();
-            var formattedTime = currentTime.getMonth() + 1 + '/' + currentTime.getDate() + ' ' +
-                currentTime.getHours() + ':' + currentTime.getMinutes();
-            var snapshot = { time: formattedTime, tabs: tabs };
+            var snapshot = { tabs: tabs };
             chrome.runtime.sendMessage({ action: 'saveSnapshot', snapshot: snapshot });
         });
     });
