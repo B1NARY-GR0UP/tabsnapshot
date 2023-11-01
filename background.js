@@ -24,7 +24,21 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         // 在这里实现恢复快照的逻辑
         // request.snapshot 包含了被点击的快照的信息，可以使用其中的tabs数组来打开链接
         request.snapshot.tabs.forEach(function(tab) {
-            chrome.tabs.create({ url: tab.url });
+            if (tab.url.startsWith('file:///')) {
+                // 如果是本地文件，打开新标签页后刷新页面
+                chrome.tabs.create({ url: tab.url }, function(newTab) {
+                    let isFirstLoad = true; // 添加标志以确保刷新只在初次加载时触发
+                    chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, updatedTab) {
+                        if (tabId === newTab.id && changeInfo.status === 'complete' && isFirstLoad) {
+                            isFirstLoad = false;
+                            chrome.tabs.reload(tabId);
+                        }
+                    });
+                });
+            } else {
+                // 如果不是本地文件，直接打开链接
+                chrome.tabs.create({ url: tab.url });
+            }
         });
     } else if (request.action === 'deleteSnapshot') {
         // 获取当前存储的快照数组
