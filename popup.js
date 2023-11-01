@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 snapshotText.className = 'snapshot-text';
                 snapshotText.textContent = snapshot.time;
 
+                var tabCount = document.createElement('span');
+                tabCount.className = 'tab-count';
+                tabCount.textContent = '[' + snapshot.tabs.length + ']';
+
                 var openButton = document.createElement('button');
                 openButton.textContent = 'Open';
                 openButton.className = 'blue-button';
@@ -64,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 listItem.appendChild(snapshotText);
+                listItem.appendChild(tabCount);
                 listItem.appendChild(openButton);
                 listItem.appendChild(renameButton);
                 listItem.appendChild(deleteButton);
