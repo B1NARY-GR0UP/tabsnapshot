@@ -16,7 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 listItem.className = 'snapshot-item';
 
                 var snapshotText = document.createElement('span');
+                snapshotText.className = 'snapshot-text';
                 snapshotText.textContent = snapshot.time;
+
+                var renameButton = document.createElement('button');
+                renameButton.textContent = 'Rename';
+                renameButton.className = 'rename-button';
+
+                // 添加重命名按钮的点击事件
+                renameButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    snapshotText.contentEditable = true;
+                    snapshotText.focus();
+                });
 
                 var deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
@@ -30,12 +42,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 listItem.appendChild(snapshotText);
+                listItem.appendChild(renameButton);
                 listItem.appendChild(deleteButton);
 
                 listItem.addEventListener('click', function() {
                     chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
                 });
                 snapshotList.appendChild(listItem);
+
+                // 添加快照文本的编辑完成事件
+                snapshotText.addEventListener('blur', function() {
+                    snapshotText.contentEditable = false;
+                    // 发送重命名请求到background.js
+                    chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
+                });
             });
         }
     });
