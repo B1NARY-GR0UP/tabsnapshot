@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.runtime.sendMessage({ action: 'saveSnapshot', snapshot: snapshot });
         });
     });
+
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.action === 'updateList') {
             snapshotList.innerHTML = '';
@@ -19,9 +20,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 snapshotText.className = 'snapshot-text';
                 snapshotText.textContent = snapshot.time;
 
+                var openButton = document.createElement('button');
+                openButton.textContent = 'Open';
+                openButton.className = 'open-button';
+
                 var renameButton = document.createElement('button');
                 renameButton.textContent = 'Rename';
                 renameButton.className = 'rename-button';
+
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-button';
+
+                // 添加打开按钮的点击事件
+                openButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
+                });
 
                 // 添加重命名按钮的点击事件
                 renameButton.addEventListener('click', function(event) {
@@ -29,10 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     snapshotText.contentEditable = true;
                     snapshotText.focus();
                 });
-
-                var deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.className = 'delete-button';
 
                 // 添加删除按钮的点击事件
                 deleteButton.addEventListener('click', function(event) {
@@ -42,13 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 listItem.appendChild(snapshotText);
+                listItem.appendChild(openButton);
                 listItem.appendChild(renameButton);
                 listItem.appendChild(deleteButton);
-
-                listItem.addEventListener('click', function() {
-                    chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
-                });
-                snapshotList.appendChild(listItem);
 
                 // 添加快照文本的编辑完成事件
                 snapshotText.addEventListener('blur', function() {
@@ -56,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // 发送重命名请求到background.js
                     chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
                 });
+
+                snapshotList.appendChild(listItem);
             });
         }
     });
