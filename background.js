@@ -74,5 +74,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 });
             }
         });
+    } else if (request.action === 'openAllSnapshots') {
+        // 获取存储的快照数组并打开所有快照
+        chrome.storage.local.get('snapshots', function(result) {
+            var snapshots = result.snapshots || [];
+            snapshots.forEach(function(snapshot) {
+                snapshot.tabs.forEach(function(tab) {
+                    chrome.tabs.create({ url: tab.url });
+                });
+            });
+        });
+    } else if (request.action === 'deleteAllSnapshots') {
+        // 删除所有快照
+        chrome.storage.local.set({ snapshots: [] }, function() {
+            chrome.runtime.sendMessage({ action: 'updateList', snapshots: [] });
+        });
     }
 });

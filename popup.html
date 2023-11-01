@@ -21,7 +21,7 @@
         .snapshot-item:hover {
             background-color: #dcdcdc;
         }
-        .delete-button {
+        .red-button {
             background-color: #ff0b0b;
             color: white;
             border: none;
@@ -29,10 +29,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .delete-button:hover {
+        .red-button:hover {
             background-color: #bb0000;
         }
-        .create-button {
+        .blue-button {
             background-color: #2f77ff;
             color: white;
             border: none;
@@ -40,36 +40,16 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .create-button:hover {
-            background-color: #006bad;
-        }
-        .rename-button {
-            background-color: #2f77ff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .rename-button:hover {
-            background-color: #006bad;
-        }
-        .open-button {
-            background-color: #2f77ff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .open-button:hover {
+        .blue-button:hover {
             background-color: #006bad;
         }
     </style>
 </head>
 <body>
 <h1>TabSnapshot</h1>
-<button id="createSnapshot" class="create-button">Create Snapshot</button><br><br>
+<button id="createSnapshot" class="blue-button">Create Snapshot</button>
+<button id="openAll" class="blue-button">Open All</button>
+<button id="deleteAll" class="red-button">Delete All</button><br><br>
 <div id="snapshotList"></div>
 </body>
 </html>

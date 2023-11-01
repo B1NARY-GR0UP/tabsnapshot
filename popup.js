@@ -1,12 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var createSnapshotButton = document.getElementById('createSnapshot');
     var snapshotList = document.getElementById('snapshotList');
+
+    var createSnapshotButton = document.getElementById('createSnapshot');
+    var openAllButton = document.getElementById('openAll');
+    var deleteAllButton = document.getElementById('deleteAll');
 
     createSnapshotButton.addEventListener('click', function() {
         chrome.tabs.query({}, function(tabs) {
             var snapshot = { time: new Date().toLocaleString(), tabs: tabs };
             chrome.runtime.sendMessage({ action: 'saveSnapshot', snapshot: snapshot });
         });
+    });
+
+    openAllButton.addEventListener('click', function() {
+        chrome.runtime.sendMessage({ action: 'openAllSnapshots' });
+    });
+
+    deleteAllButton.addEventListener('click', function() {
+        chrome.runtime.sendMessage({ action: 'deleteAllSnapshots' });
     });
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -22,15 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 var openButton = document.createElement('button');
                 openButton.textContent = 'Open';
-                openButton.className = 'open-button';
+                openButton.className = 'blue-button';
 
                 var renameButton = document.createElement('button');
                 renameButton.textContent = 'Rename';
-                renameButton.className = 'rename-button';
+                renameButton.className = 'blue-button';
 
                 var deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.className = 'delete-button';
+                deleteButton.className = 'red-button';
 
                 // 添加打开按钮的点击事件
                 openButton.addEventListener('click', function(event) {
