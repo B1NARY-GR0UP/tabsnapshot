@@ -10,6 +10,6 @@ Tab-Snapshot is a Chrome extension that allow you to create a snapshot for the c
 - [x] Open All 按钮（和 create snapshot 平齐）
 - [x] snapshot 后显示包含的链接数量，e.g. sample [3]
 - [x] 同一分钟快照进行编号
-- [ ] 鼠标放在 snapshot 上可以进行预览
+- [x] 鼠标放在 snapshot 上可以进行预览
 - [ ] 更加好看的 UI （将确认，重命名和删除按钮改为圆形图标的形式，不使用文字）
 - [ ] 导出和导入快照（待定）

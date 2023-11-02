@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var openAllButton = document.getElementById('openAll');
     var deleteAllButton = document.getElementById('deleteAll');
 
+    // 保存当前被预览的快照
+    var currentPreviewSnapshot = null;
+
     createSnapshotButton.addEventListener('click', function() {
         chrome.tabs.query({}, function(tabs) {
             var snapshot = { tabs: tabs };
@@ -19,6 +22,31 @@ document.addEventListener('DOMContentLoaded', function() {
     deleteAllButton.addEventListener('click', function() {
         chrome.runtime.sendMessage({ action: 'deleteAllSnapshots' });
     });
+
+    function previewSnapshot(snapshot) {
+        var screenWidth = window.screen.width;
+        var screenHeight = window.screen.height;
+        var windowWidth = 300; // 预览窗口的宽度
+        var windowHeight = 300; // 预览窗口的高度
+
+        var left = (screenWidth - windowWidth) / 2;
+        var top = (screenHeight - windowHeight) / 2;
+
+        var previewWindow = window.open('', '_blank', 'width=' + windowWidth + ',height=' + windowHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes');
+        var previewContent = document.createElement('ul');
+
+        snapshot.tabs.forEach(function(tab) {
+            var listItem = document.createElement('li');
+            var link = document.createElement('a');
+            link.href = tab.url;
+            link.target = '_blank';
+            link.textContent = tab.title || tab.url;
+            listItem.appendChild(link);
+            previewContent.appendChild(listItem);
+        });
+
+        previewWindow.document.body.appendChild(previewContent);
+    }
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.action === 'updateList') {
@@ -65,6 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     event.stopPropagation();
                     // 向background.js发送删除快照的请求
                     chrome.runtime.sendMessage({ action: 'deleteSnapshot', snapshot: snapshot });
+                });
+
+                // 添加预览按钮的点击事件
+                snapshotText.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    // 预览快照
+                    previewSnapshot(snapshot);
                 });
 
                 listItem.appendChild(snapshotText);
