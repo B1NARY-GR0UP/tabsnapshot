@@ -41,13 +41,13 @@ body {
 }
 
 .about-link {
-    color: #2f77ff; /* 链接文本颜色 */
-    text-decoration: none; /* 移除下划线 */
-    font-weight: bold; /* 文本加粗 */
+    color: #2f77ff;
+    text-decoration: none;
+    font-weight: bold;
     font-size: 18px;
-    margin-left: 3px; /* 与标题之间的间距 */
-    transition: color 0.3s; /* 添加颜色变化的过渡效果 */
+    margin-left: 3px;
+    transition: color 0.3s;
 }
 .about-link:hover {
-    color: #006bad; /* 鼠标悬停时的文本颜色 */
+    color: #006bad;
 }

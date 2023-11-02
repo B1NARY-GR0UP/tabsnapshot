@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var openAllButton = document.getElementById('openAll');
     var deleteAllButton = document.getElementById('deleteAll');
 
-    // 保存当前被预览的快照
-    var currentPreviewSnapshot = null;
-
     createSnapshotButton.addEventListener('click', function() {
         chrome.tabs.query({}, function(tabs) {
             var snapshot = { tabs: tabs };
@@ -22,31 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     deleteAllButton.addEventListener('click', function() {
         chrome.runtime.sendMessage({ action: 'deleteAllSnapshots' });
     });
-
-    function previewSnapshot(snapshot) {
-        var screenWidth = window.screen.width;
-        var screenHeight = window.screen.height;
-        var windowWidth = 300; // 预览窗口的宽度
-        var windowHeight = 300; // 预览窗口的高度
-
-        var left = (screenWidth - windowWidth) / 2;
-        var top = (screenHeight - windowHeight) / 2;
-
-        var previewWindow = window.open('', '_blank', 'width=' + windowWidth + ',height=' + windowHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes');
-        var previewContent = document.createElement('ul');
-
-        snapshot.tabs.forEach(function(tab) {
-            var listItem = document.createElement('li');
-            var link = document.createElement('a');
-            link.href = tab.url;
-            link.target = '_blank';
-            link.textContent = tab.title || tab.url;
-            listItem.appendChild(link);
-            previewContent.appendChild(listItem);
-        });
-
-        previewWindow.document.body.appendChild(previewContent);
-    }
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.action === 'updateList') {
@@ -75,30 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 deleteButton.textContent = 'Delete';
                 deleteButton.className = 'red-button';
 
-                // 添加打开按钮的点击事件
                 openButton.addEventListener('click', function(event) {
                     event.stopPropagation();
                     chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
                 });
 
-                // 添加重命名按钮的点击事件
                 renameButton.addEventListener('click', function(event) {
                     event.stopPropagation();
                     snapshotText.contentEditable = true;
                     snapshotText.focus();
                 });
 
-                // 添加删除按钮的点击事件
                 deleteButton.addEventListener('click', function(event) {
                     event.stopPropagation();
-                    // 向background.js发送删除快照的请求
+                    // send delete snapshot request to background.js
                     chrome.runtime.sendMessage({ action: 'deleteSnapshot', snapshot: snapshot });
                 });
 
-                // 添加预览按钮的点击事件
+                // add preview event
                 snapshotText.addEventListener('click', function(event) {
                     event.stopPropagation();
-                    // 预览快照
                     previewSnapshot(snapshot);
                 });
 
@@ -108,11 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 listItem.appendChild(renameButton);
                 listItem.appendChild(deleteButton);
 
-                // 添加快照文本的编辑完成事件
+                // edit accomplish event
                 snapshotText.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
                         snapshotText.contentEditable = false;
-                        // 发送重命名请求到background.js
+                        // send rename request
                         chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
                     }
                 });
@@ -123,4 +91,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     chrome.runtime.sendMessage({ action: 'getSnapshots' });
+
+    function previewSnapshot(snapshot) {
+        var screenWidth = window.screen.width;
+        var screenHeight = window.screen.height;
+        var windowWidth = 300; // preview window width
+        var windowHeight = 300; // preview window height
+
+        var left = (screenWidth - windowWidth) / 2;
+        var top = (screenHeight - windowHeight) / 2;
+
+        var previewWindow = window.open('', '_blank', 'width=' + windowWidth + ',height=' + windowHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes');
+        var previewContent = document.createElement('ul');
+
+        snapshot.tabs.forEach(function(tab) {
+            var listItem = document.createElement('li');
+            var link = document.createElement('a');
+            link.href = tab.url;
+            link.target = '_blank';
+            link.textContent = tab.title || tab.url;
+            listItem.appendChild(link);
+            previewContent.appendChild(listItem);
+        });
+
+        previewWindow.document.title = 'Snapshot Preview'; // preview window title
+        previewWindow.document.body.appendChild(previewContent);
+    }
 });
