@@ -3,50 +3,10 @@
 <head>
     <title>tabsnapshot</title>
     <script src="popup.js" defer></script>
-    <!-- TODO: extract css to new file -->
-    <style>
-        body {
-            width: 300px;
-        }
-        .snapshot-item {
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             margin-bottom: 5px;
-             background-color: #f1f1f1;
-             padding: 10px;
-             border-radius: 5px;
-             transition: background-color 0.3s;
-         }
-        .snapshot-item:hover {
-            background-color: #dcdcdc;
-        }
-        .red-button {
-            background-color: #ff0b0b;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .red-button:hover {
-            background-color: #bb0000;
-        }
-        .blue-button {
-            background-color: #2f77ff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .blue-button:hover {
-            background-color: #006bad;
-        }
-    </style>
+    <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<h1>TabSnapshot</h1>
+<a href="https://github.com/B1NARY-GR0UP/tabsnapshot" target="_blank" class="about-link">TabSnapshot</a><br><br>
 <button id="createSnapshot" class="blue-button">Create Snapshot</button>
 <button id="openAll" class="blue-button">Open All</button>
 <button id="deleteAll" class="red-button">Delete All</button><br><br>

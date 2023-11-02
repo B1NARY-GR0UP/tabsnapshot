@@ -1,0 +1,53 @@
+body {
+    width: 300px;
+}
+
+.snapshot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+.snapshot-item:hover {
+    background-color: #dcdcdc;
+}
+
+.red-button {
+    background-color: #ff0b0b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.red-button:hover {
+    background-color: #bb0000;
+}
+
+.blue-button {
+    background-color: #2f77ff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.blue-button:hover {
+    background-color: #006bad;
+}
+
+.about-link {
+    color: #2f77ff; /* 链接文本颜色 */
+    text-decoration: none; /* 移除下划线 */
+    font-weight: bold; /* 文本加粗 */
+    font-size: 18px;
+    margin-left: 3px; /* 与标题之间的间距 */
+    transition: color 0.3s; /* 添加颜色变化的过渡效果 */
+}
+.about-link:hover {
+    color: #006bad; /* 鼠标悬停时的文本颜色 */
+}
