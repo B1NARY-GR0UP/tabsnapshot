@@ -2,7 +2,7 @@
 
 ![TABSNAPSHOT](images/TABSNAPSHOT.png)
 
-TABSNAPSHOT is a Chrome extension that allow you to create a snapshot for the current open tabs.
+TABSNAPSHOT is a Chrome extension that allows you to create a snapshot for the current open tabs.
 
 ## Install
 
