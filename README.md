@@ -25,7 +25,7 @@ The current features supported by TABSNAPSHOT include:
 - Preview saved snapshots.
 - Open or Delete All saved snapshots at once.
 
-**Note:** All TABSNAPSHOT features are integrated into the plugin's pop-up panel. Make sure to have TABSNAPSHOT properly installed and pinned to your Chrome for these functionalities.
+**Note: All TABSNAPSHOT features are integrated into the plugin's pop-up panel. Make sure to have TABSNAPSHOT properly installed and pinned to your Chrome for these functionalities.**
 
 ### Create Snapshot
 
