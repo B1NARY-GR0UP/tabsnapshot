@@ -6,6 +6,8 @@ Tab-Snapshot is a Chrome extension that allow you to create a snapshot for the c
 
 ## Install
 
+TODO: add more detail information
+
 Download and install from [source](https://github.com/B1NARY-GR0UP/tabsnapshot/releases).
 
 ## Usage
