@@ -59,6 +59,10 @@ Click `Open All` and `Delete All` in the TABSNAPSHOT pop-up panel to open or del
 
 ![opendeleteall](images/opendeleteall.png)
 
+## Blogs
+
+- [How to Build Your Own Chrome Extension Using ChatGPT](https://dev.to/justlorain/how-to-build-your-own-chrome-extension-using-chatgpt-1pfa) | [中文](https://juejin.cn/post/7297124052175798308)
+
 ## License
 
 TABSNAPSHOT is distributed under the [Apache License 2.0](./LICENSE).
