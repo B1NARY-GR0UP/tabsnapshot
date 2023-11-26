@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 renameButton.textContent = 'Rename';
                 renameButton.className = 'blue-button';
 
+                var updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.className = 'blue-button';
+
                 var deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
                 deleteButton.className = 'red-button';
@@ -72,6 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     event.stopPropagation();
                     snapshotText.contentEditable = true;
                     snapshotText.focus();
+                });
+
+                updateButton.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    chrome.tabs.query({}, function(tabs) {
+                        var updatedSnapshot = { tabs: tabs };
+                        chrome.runtime.sendMessage({ action: 'updateSnapshot', snapshot: snapshot, updatedSnapshot: updatedSnapshot });
+                    });
                 });
 
                 deleteButton.addEventListener('click', function(event) {
@@ -90,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 listItem.appendChild(tabCount);
                 listItem.appendChild(openButton);
                 listItem.appendChild(renameButton);
+                listItem.appendChild(updateButton);
                 listItem.appendChild(deleteButton);
 
                 // edit accomplish event

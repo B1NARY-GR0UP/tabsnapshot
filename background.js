@@ -103,6 +103,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 });
             }
         });
+    } else if (request.action === 'updateSnapshot') {
+        chrome.storage.local.get('snapshots', function(result) {
+            var snapshots = result.snapshots || [];
+            var index = snapshots.findIndex(function(snapshot) {
+                return snapshot.time === request.snapshot.time;
+            });
+
+            if (index !== -1) {
+                snapshots[index].tabs = request.updatedSnapshot.tabs;
+                chrome.storage.local.set({ snapshots: snapshots }, function() {
+                    chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
+                });
+            }
+        });
     } else if (request.action === 'openAllSnapshots') {
         // get and open all snapshots
         chrome.storage.local.get('snapshots', function(result) {
