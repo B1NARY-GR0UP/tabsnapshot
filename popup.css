@@ -2,11 +2,21 @@ body {
     width: 370px;
 }
 
+.tab-count {
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    color: #333;
+}
+
 .snapshot-text {
     max-width: 130px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2f77ff;
 }
 .snapshot-item {
     display: flex;
