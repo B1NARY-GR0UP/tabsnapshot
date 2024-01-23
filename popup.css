@@ -1,7 +1,13 @@
 body {
-    width: 350px;
+    width: 370px;
 }
 
+.snapshot-text {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .snapshot-item {
     display: flex;
     justify-content: space-between;
