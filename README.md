@@ -39,7 +39,7 @@ The current features supported by TABSNAPSHOT include:
 
 5. The snapshots are named by default based on the creation time (down to minute).
 
-6. A saved snapshot item.**
+6. A saved snapshot item.
 
 7. If you create multiple snapshots within the same minute, they will be automatically numbered.
 
