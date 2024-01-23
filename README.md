@@ -29,19 +29,31 @@ The current features supported by TABSNAPSHOT include:
 
 ![userguide](./images/userguide.png)
 
-**1. The open-source address of the extension.**
-**2. Use `Create` to capture a snapshot of all currently open tab pages in Chrome.**
-**3. Use `Open All` to open all saved snapshots at once.**
-**4. Use `Delete All` to delete all saved snapshots at once.**
-**5. The snapshots are named by default based on the creation time (down to minute).**
-**6. A saved snapshot item.**
-**7. If you create multiple snapshots within the same minute, they will be automatically numbered.**
-**8. Use `Open` to open a saved snapshot item.**
-**9. Use `Rename` to rename a saved snapshot item.**
-**10. Use `Update` to update a saved snapshot item.**
-**11. Use `Delete` to delete a saved snapshot item.**
-**12. Click on the snapshot's name in blue to open a preview window and view all the links saved in the snapshot item.**
-**13. The number indicates the quantity of tabs included in the snapshot item.**
+1. The open-source address of the extension.
+
+2. Use `Create` to capture a snapshot of all currently open tab pages in Chrome.
+
+3. Use `Open All` to open all saved snapshots at once.
+
+4. Use `Delete All` to delete all saved snapshots at once.
+
+5. The snapshots are named by default based on the creation time (down to minute).
+
+6. A saved snapshot item.**
+
+7. If you create multiple snapshots within the same minute, they will be automatically numbered.
+
+8. Use `Open` to open a saved snapshot item.
+
+9. Use `Rename` to rename a saved snapshot item.
+
+10. Use `Update` to update a saved snapshot item.
+
+11. Use `Delete` to delete a saved snapshot item.
+
+12. Click on the snapshot's name in blue to open a preview window and view all the links saved in the snapshot item.
+
+13. The number indicates the quantity of tabs included in the snapshot item.
 
 ## Blogs
 
