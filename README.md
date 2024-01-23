@@ -20,44 +20,28 @@ Since TABSNAPSHOT has not been released on the Chrome Web Store yet (it will be 
 
 The current features supported by TABSNAPSHOT include:
 
-- Save all currently open tabs in Chrome as a snapshot and store it.
-- Open, Rename, and Delete saved snapshots.
+- Save all currently open tabs in Chrome as a snapshot item.
+- Open, Rename, Update and Delete saved snapshots.
 - Preview saved snapshots.
 - Open or Delete All saved snapshots at once.
 
 **Note: All TABSNAPSHOT features are integrated into the plugin's pop-up panel. Make sure to have TABSNAPSHOT properly installed and pinned to your Chrome for these functionalities.**
 
-### Create Snapshot
+![userguide](./images/userguide.png)
 
-Click the `Create Snapshot` button in the TABSNAPSHOT pop-up panel to create a snapshot of all currently open tab pages in Chrome and save it:
-
-![createsnapshot](images/createsnapshot.png)
-
-### Open, Rename and Delete snapshot
-
-All created snapshots will be displayed in a list format in the TABSNAPSHOT pop-up panel. The snapshots are named by default based on the creation time (down to the minute; if you create multiple snapshots within the same minute, they will be automatically numbered). The number displayed after each snapshot's name indicates the quantity of tabs included in the snapshot, for example, `[3]` means the snapshot contains three tabs:
-
-![snapshotlist](images/snapshotlist.png)
-
-You can open, rename, and delete snapshots using the `Open`, `Rename`, and `Delete` buttons next to each snapshot:
-
-![snapshotoperations](images/snapshotoperations.png)
-
-### Snapshot Preview
-
-You can click on a snapshot to preview the tabs contained within it:
-
-![snapshotpreview](images/snapshotpreview.png)
-
-TABSNAPSHOT will open a separate window listing all the tabs included in the snapshot:
-
-![previewwindow](images/previewwindow.png)
-
-### Open and Delete All snapshots
-
-Click `Open All` and `Delete All` in the TABSNAPSHOT pop-up panel to open or delete all saved snapshots at once:
-
-![opendeleteall](images/opendeleteall.png)
+**1. The open-source address of the extension.**
+**2. Use `Create` to capture a snapshot of all currently open tab pages in Chrome.**
+**3. Use `Open All` to open all saved snapshots at once.**
+**4. Use `Delete All` to delete all saved snapshots at once.**
+**5. The snapshots are named by default based on the creation time (down to minute).**
+**6. A saved snapshot item.**
+**7. If you create multiple snapshots within the same minute, they will be automatically numbered.**
+**8. Use `Open` to open a saved snapshot item.**
+**9. Use `Rename` to rename a saved snapshot item.**
+**10. Use `Update` to update a saved snapshot item.**
+**11. Use `Delete` to delete a saved snapshot item.**
+**12. Click on the snapshot's name in blue to open a preview window and view all the links saved in the snapshot item.**
+**13. The number indicates the quantity of tabs included in the snapshot item.**
 
 ## Blogs
 
