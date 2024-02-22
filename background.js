@@ -17,13 +17,13 @@
 // TODO: export and import snapshots (need decision)
 chrome.runtime.onInstalled.addListener(function() {
     // init snapshot list when extension installed
-    chrome.storage.sync.set({ snapshots: [] });
+    chrome.storage.local.set({ snapshots: [] });
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === 'saveSnapshot') {
         // get snapshot list
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             var currentTime = new Date();
             var formattedTime = currentTime.getMonth() + 1 + '/' + currentTime.getDate() + ' ' +
@@ -40,13 +40,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             var newSnapshot = { time: snapshotName, tabs: request.snapshot.tabs };
             snapshots.push(newSnapshot);
-            chrome.storage.sync.set({ snapshots: snapshots }, function() {
+            chrome.storage.local.set({ snapshots: snapshots }, function() {
                 chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
             });
         });
     } else if (request.action === 'getSnapshots') {
         // get and send snapshot list to popup.js
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
         });
@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     } else if (request.action === 'deleteSnapshot') {
         // get snapshot list
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             // find delete snapshot
             var index = snapshots.findIndex(function(snapshot) {
@@ -82,13 +82,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if (index !== -1) {
                 snapshots.splice(index, 1);
                 // save updated list
-                chrome.storage.sync.set({ snapshots: snapshots }, function() {
+                chrome.storage.local.set({ snapshots: snapshots }, function() {
                     chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
                 });
             }
         });
     } else if (request.action === 'renameSnapshot') {
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             // find rename snapshot
             var index = snapshots.findIndex(function(snapshot) {
@@ -98,13 +98,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             if (index !== -1) {
                 snapshots[index].time = request.newName;
                 // save updated list
-                chrome.storage.sync.set({ snapshots: snapshots }, function() {
+                chrome.storage.local.set({ snapshots: snapshots }, function() {
                     chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
                 });
             }
         });
     } else if (request.action === 'updateSnapshot') {
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             var index = snapshots.findIndex(function(snapshot) {
                 return snapshot.time === request.snapshot.time;
@@ -112,14 +112,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
             if (index !== -1) {
                 snapshots[index].tabs = request.updatedSnapshot.tabs;
-                chrome.storage.sync.set({ snapshots: snapshots }, function() {
+                chrome.storage.local.set({ snapshots: snapshots }, function() {
                     chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
                 });
             }
         });
     } else if (request.action === 'openAllSnapshots') {
         // get and open all snapshots
-        chrome.storage.sync.get('snapshots', function(result) {
+        chrome.storage.local.get('snapshots', function(result) {
             var snapshots = result.snapshots || [];
             snapshots.forEach(function(snapshot) {
                 snapshot.tabs.forEach(function(tab) {
@@ -129,7 +129,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     } else if (request.action === 'deleteAllSnapshots') {
         // remove all snapshots
-        chrome.storage.sync.set({ snapshots: [] }, function() {
+        chrome.storage.local.set({ snapshots: [] }, function() {
             chrome.runtime.sendMessage({ action: 'updateList', snapshots: [] });
         });
     }
