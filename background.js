@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// TODO: export and import snapshots (need decision)
 chrome.runtime.onInstalled.addListener(function() {
     // init snapshot list when extension installed
     chrome.storage.local.set({ snapshots: [] });

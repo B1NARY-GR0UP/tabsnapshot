@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var snapshotList = document.getElementById('snapshotList');
 
     var createSnapshotButton = document.getElementById('createSnapshot');
-    var openAllButton = document.getElementById('openAll');
-    var deleteAllButton = document.getElementById('deleteAll');
+    var exportSnapshotsButton = document.getElementById('exportSnapshots');
+    var importSnapshotsButton = document.getElementById('importSnapshots');
+    var fileInput = document.getElementById('fileInput');
 
     createSnapshotButton.addEventListener('click', function() {
         chrome.tabs.query({}, function(tabs) {
@@ -28,104 +29,61 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    openAllButton.addEventListener('click', function() {
-        chrome.runtime.sendMessage({ action: 'openAllSnapshots' });
+    exportSnapshotsButton.addEventListener('click', function() {
+        chrome.storage.local.get('snapshots', function(result) {
+            var snapshots = result.snapshots || [];
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(snapshots));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "snapshots.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        });
     });
 
-    deleteAllButton.addEventListener('click', function() {
-        chrome.runtime.sendMessage({ action: 'deleteAllSnapshots' });
+    importSnapshotsButton.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var snapshots = JSON.parse(e.target.result);
+            chrome.storage.local.set({ snapshots: snapshots }, function() {
+                chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
+                updateSnapshotList(snapshots);
+            });
+        };
+        reader.readAsText(file);
     });
 
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.action === 'updateList') {
             snapshotList.innerHTML = '';
-            request.snapshots.forEach(function(snapshot) {
-                var listItem = document.createElement('div');
-                listItem.className = 'snapshot-item';
-
-                var snapshotText = document.createElement('span');
-                snapshotText.className = 'snapshot-text';
-                snapshotText.textContent = snapshot.time;
-
-                var tabCount = document.createElement('span');
-                tabCount.className = 'tab-count';
-                tabCount.textContent = '[' + snapshot.tabs.length + ']';
-
-                var openButton = document.createElement('button');
-                openButton.textContent = 'Open';
-                openButton.className = 'blue-button';
-
-                var renameButton = document.createElement('button');
-                renameButton.textContent = 'Rename';
-                renameButton.className = 'blue-button';
-
-                var updateButton = document.createElement('button');
-                updateButton.textContent = 'Update';
-                updateButton.className = 'blue-button';
-
-                var deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.className = 'red-button';
-
-                openButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
-                });
-
-                renameButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    snapshotText.contentEditable = true;
-                    snapshotText.focus();
-                });
-
-                updateButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    chrome.tabs.query({}, function(tabs) {
-                        var updatedSnapshot = { tabs: tabs };
-                        chrome.runtime.sendMessage({ action: 'updateSnapshot', snapshot: snapshot, updatedSnapshot: updatedSnapshot });
-                    });
-                });
-
-                deleteButton.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    // send delete snapshot request to background.js
-                    chrome.runtime.sendMessage({ action: 'deleteSnapshot', snapshot: snapshot });
-                });
-
-                // add preview event
-                snapshotText.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    previewSnapshot(snapshot);
-                });
-
-                listItem.appendChild(snapshotText);
-                listItem.appendChild(tabCount);
-                listItem.appendChild(openButton);
-                listItem.appendChild(renameButton);
-                listItem.appendChild(updateButton);
-                listItem.appendChild(deleteButton);
-
-                // edit accomplish event
-                snapshotText.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter') {
-                        snapshotText.contentEditable = false;
-                        // send rename request
-                        chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
-                    }
-                });
-
-                snapshotList.appendChild(listItem);
-            });
         }
+        request.snapshots.forEach(function(snapshot) {
+            var listItem = createSnapshotListItem(snapshot);
+            snapshotList.appendChild(listItem);
+        });
     });
 
     chrome.runtime.sendMessage({ action: 'getSnapshots' });
 
+    function updateSnapshotList(snapshots) {
+        snapshotList.innerHTML = '';
+        snapshots.forEach(function(snapshot) {
+            var listItem = createSnapshotListItem(snapshot);
+            snapshotList.appendChild(listItem);
+        });
+    }
+
     function previewSnapshot(snapshot) {
         var screenWidth = window.screen.width;
         var screenHeight = window.screen.height;
-        var windowWidth = 300; // preview window width
-        var windowHeight = 300; // preview window height
+        var windowWidth = 300;
+        var windowHeight = 300;
 
         var left = (screenWidth - windowWidth) / 2;
         var top = (screenHeight - windowHeight) / 2;
@@ -143,7 +101,81 @@ document.addEventListener('DOMContentLoaded', function() {
             previewContent.appendChild(listItem);
         });
 
-        previewWindow.document.title = 'Snapshot Preview'; // preview window title
+        previewWindow.document.title = 'Snapshot Preview';
         previewWindow.document.body.appendChild(previewContent);
+    }
+
+    function createSnapshotListItem(snapshot) {
+        var listItem = document.createElement('div');
+        listItem.className = 'snapshot-item';
+
+        var snapshotText = document.createElement('span');
+        snapshotText.className = 'snapshot-text';
+        snapshotText.textContent = snapshot.time;
+
+        var tabCount = document.createElement('span');
+        tabCount.className = 'tab-count';
+        tabCount.textContent = '[' + snapshot.tabs.length + ']';
+
+        var openButton = document.createElement('button');
+        openButton.textContent = 'Open';
+        openButton.className = 'blue-button';
+
+        var renameButton = document.createElement('button');
+        renameButton.textContent = 'Rename';
+        renameButton.className = 'yellow-button';
+
+        var updateButton = document.createElement('button');
+        updateButton.textContent = 'Update';
+        updateButton.className = 'blue-button';
+
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = 'red-button';
+
+        openButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            chrome.runtime.sendMessage({ action: 'restoreSnapshot', snapshot: snapshot });
+        });
+
+        renameButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            snapshotText.contentEditable = true;
+            snapshotText.focus();
+        });
+
+        updateButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            chrome.tabs.query({}, function(tabs) {
+                var updatedSnapshot = { tabs: tabs };
+                chrome.runtime.sendMessage({ action: 'updateSnapshot', snapshot: snapshot, updatedSnapshot: updatedSnapshot });
+            });
+        });
+
+        deleteButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            chrome.runtime.sendMessage({ action: 'deleteSnapshot', snapshot: snapshot });
+        });
+
+        snapshotText.addEventListener('click', function(event) {
+            event.stopPropagation();
+            previewSnapshot(snapshot);
+        });
+
+        listItem.appendChild(snapshotText);
+        listItem.appendChild(tabCount);
+        listItem.appendChild(openButton);
+        listItem.appendChild(renameButton);
+        listItem.appendChild(updateButton);
+        listItem.appendChild(deleteButton);
+
+        snapshotText.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                snapshotText.contentEditable = false;
+                chrome.runtime.sendMessage({ action: 'renameSnapshot', snapshot: snapshot, newName: snapshotText.textContent });
+            }
+        });
+
+        return listItem;
     }
 });

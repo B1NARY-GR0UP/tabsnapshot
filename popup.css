@@ -16,7 +16,7 @@ body {
     font-family: 'Arial', sans-serif;
     font-size: 13px;
     font-weight: bold;
-    color: #2f77ff;
+    color: #000000;
 }
 .snapshot-item {
     display: flex;
@@ -33,7 +33,7 @@ body {
 }
 
 .red-button {
-    background-color: #ff0b0b;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -41,11 +41,11 @@ body {
     cursor: pointer;
 }
 .red-button:hover {
-    background-color: #bb0000;
+    background-color: #EA4335;
 }
 
 .blue-button {
-    background-color: #2f77ff;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -53,11 +53,35 @@ body {
     cursor: pointer;
 }
 .blue-button:hover {
-    background-color: #006bad;
+    background-color: #4285F4;
+}
+
+.green-button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.green-button:hover {
+    background-color: #34A853;
+}
+
+.yellow-button {
+    background-color: #000000;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.yellow-button:hover {
+    background-color: #FBBC05;
 }
 
 .about-link {
-    color: #2f77ff;
+    color: #000000;
     text-decoration: none;
     font-weight: bold;
     font-size: 18px;
@@ -65,5 +89,5 @@ body {
     transition: color 0.3s;
 }
 .about-link:hover {
-    color: #006bad;
+    color: #ff0000;
 }
