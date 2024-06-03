@@ -23,7 +23,7 @@ The current features supported by TABSNAPSHOT include:
 - Save all currently open tabs in Chrome as a snapshot item.
 - Open, Rename, Update and Delete saved snapshots.
 - Preview saved snapshots.
-- Open or Delete All saved snapshots at once.
+- Export or Import snapshots as a JSON file.
 
 **Note: All TABSNAPSHOT features are integrated into the plugin's pop-up panel. Make sure to have TABSNAPSHOT properly installed and pinned to your Chrome for these functionalities.**
 
@@ -33,9 +33,9 @@ The current features supported by TABSNAPSHOT include:
 
 2. Use `Create` to capture a snapshot of all currently open tab pages in Chrome.
 
-3. Use `Open All` to open all saved snapshots at once.
+3. Use `Export` to export snapshots to a JSON file.
 
-4. Use `Delete All` to delete all saved snapshots at once.
+4. Use `Import` to import the JSON file which includes the snapshots.
 
 5. The snapshots are named by default based on the creation time (down to minute).
 
