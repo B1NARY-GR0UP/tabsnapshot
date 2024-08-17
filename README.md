@@ -33,7 +33,7 @@ The current features supported by TABSNAPSHOT include:
 
 3. Use `Export` to export snapshots to a JSON file.
 
-4. Use `Import` to import the JSON file which includes the snapshots.
+4. Use `Import` to import the JSON file which includes the snapshots (append new snapshot items and overwriting snapshot items with the same name).
 
 5. The snapshots are named by default based on the creation time (down to minute).
 

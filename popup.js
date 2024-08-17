@@ -50,10 +50,26 @@ document.addEventListener('DOMContentLoaded', function() {
         var file = fileInput.files[0];
         var reader = new FileReader();
         reader.onload = function(e) {
-            var snapshots = JSON.parse(e.target.result);
-            chrome.storage.local.set({ snapshots: snapshots }, function() {
-                chrome.runtime.sendMessage({ action: 'updateList', snapshots: snapshots });
-                updateSnapshotList(snapshots);
+            var importedSnapshots = JSON.parse(e.target.result);
+            chrome.storage.local.get('snapshots', function(result) {
+                var currentSnapshots = result.snapshots || [];
+
+                importedSnapshots.forEach(function(importedSnapshot) {
+                    var index = currentSnapshots.findIndex(function(snapshot) {
+                        return snapshot.time === importedSnapshot.time;
+                    });
+
+                    if (index !== -1) {
+                        currentSnapshots[index] = importedSnapshot;
+                    } else {
+                        currentSnapshots.push(importedSnapshot);
+                    }
+                });
+
+                chrome.storage.local.set({ snapshots: currentSnapshots }, function() {
+                    chrome.runtime.sendMessage({ action: 'updateList', snapshots: currentSnapshots });
+                    updateSnapshotList(currentSnapshots);
+                });
             });
         };
         reader.readAsText(file);
